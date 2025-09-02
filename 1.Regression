@@ -1,0 +1,78 @@
+
+1.LINEAR REGRESSION
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score
+
+# Dataset: Study Hours vs Exam Scores
+X = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9]).reshape(-1, 1)
+y = np.array([35, 40, 50, 55, 60, 65, 70, 78, 85])
+
+# Model training
+model = LinearRegression()
+model.fit(X, y)
+y_pred = model.predict(X)
+
+# Visualization
+plt.scatter(X, y, color='blue', label='Actual')
+plt.plot(X, y_pred, color='red', label='Predicted')
+plt.title('Linear Regression')
+plt.xlabel('Study Hours')
+plt.ylabel('Exam Score')
+plt.legend()
+plt.grid(True)
+plt.show()
+ Evaluation
+print("Linear Regression R² Score:", r2_score(y, y_pred))
+Linear Regression R² Score: 0.9931241255246852
+
+2. POLYNOMIAL REGRESSION
+from sklearn.preprocessing import PolynomialFeatures
+
+# Transform to polynomial features
+poly = PolynomialFeatures(degree=2)
+X_poly = poly.fit_transform(X)
+
+# Model training
+poly_model = LinearRegression()
+poly_model.fit(X_poly, y)
+y_poly_pred = poly_model.predict(X_poly)
+
+# Visualization
+plt.scatter(X, y, color='blue', label='Actual')
+plt.plot(X, y_poly_pred, color='green', label='Polynomial Fit')
+plt.title('Polynomial Regression (Degree 2)')
+plt.xlabel('Study Hours')
+plt.ylabel('Exam Score')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+# Evaluation
+print("Polynomial Regression R² Score:", r2_score(y, y_poly_pred))
+Polynomial Regression R² Score: 0.9931559246270419
+
+3. LOGISTIC REGRESSION (Iris Dataset)
+from sklearn.datasets import load_iris
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+
+# Load dataset
+iris = load_iris()
+X = iris.data[:, :2]  # Use first 2 features for simplicity
+y = (iris.target == 0).astype(int)  # Setosa = 1, Others = 0
+
+# Split data
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train logistic regression
+log_model = LogisticRegression()
+log_model.fit(X_train, y_train)
+y_pred = log_model.predict(X_test)
+
+# Output
+print("Logistic Regression Accuracy:", accuracy_score(y_test, y_pred))
+print("Confusion Matrix:\n", confusion_matrix(y_test, y_pred))
+print("Classification Report:\n", classification_report(y_test, y_pred))
